@@ -1,0 +1,221 @@
+//---------------------------------------------------------------------------//
+//      BOOST --- BESIII Object_Oriented Simulation Tool                     //
+//---------------------------------------------------------------------------
+//Description: Sensitive detector definition for axial layers of MDC 
+//Author: Yuan Ye(yuany@mail.ihep.ac.cn)
+//Created: 4 Dec, 2003
+//Modified:
+//Comment: Used in "BesMdc"
+//---------------------------------------------------------------------------//
+
+#ifndef BesMdcSD_h
+#define BesMdcSD_h 1
+class TFile;
+class TH1F;
+class G4Svc;
+
+//#include "G4VSensitiveDetector.hh"
+#include "BesSensitiveDetector.hh"
+#include "BesMdcHit.hh"
+#include "BesMdcGeoParameter.hh"
+#include "BesMdcCalTransfer.hh"
+#include "MdcGeomSvc/MdcGeomSvc.h"
+#include "CalibDataSvc/CalibDataSvc.h"
+#include "DedxCurSvc/DedxCurSvc.h"
+#include "GaudiKernel/NTuple.h"
+#include "TF1.h"
+
+#include <vector>
+
+class G4Step;
+class G4HCofThisEvent;
+class BesSensitiveManager;
+class G4Svc;
+
+class BesMdcSD : public BesSensitiveDetector
+{
+public:
+  BesMdcSD(G4String);
+  ~BesMdcSD();
+  
+  void Initialize(G4HCofThisEvent*);
+  G4bool ProcessHits(G4Step*, G4TouchableHistory*);
+  void EndOfEvent(G4HCofThisEvent*);
+
+  void BeginOfTruthEvent(const G4Event*);
+  void EndOfTruthEvent(const G4Event*);
+
+  G4double Distance(G4int, G4int,G4ThreeVector,G4ThreeVector,G4ThreeVector&,G4double&);
+ 
+     //! Calculates a rotation matrix in advance at a local position in lab.
+ 
+     /*!
+ 
+       The rotation is done about the coord. origin; lab.-frame to B-field
+ 
+       frame in which only Bz-comp. is non-zero.
+ 
+     */
+ 
+    void for_Rotat(const G4double bfld[3]);
+     //! Translation method
+     /*! Translates (x,y,z) in lab. to (x,y,z) in B-field frame (mode=1), or reverse
+       translation (mode=-1).
+    */
+ 
+     void Rotat(G4double& x, G4double& y,
+    
+                G4double& z,
+
+                const int mode);
+
+
+     //! Overloaded translation method
+
+     void Rotat(G4double x[3], const int mode);
+
+
+     //! Calculate closest points between helix and wire.
+
+     /*!
+ 
+       Input
+ 
+       xwb4 : x of wire at backward endplate in lab.
+ 
+       ywb4 : y of wire at backward endplate   "
+ 
+       zwb4 : z of wire at backward endplate   "
+
+       xwf4 : x of wire at forward  endplate   "
+
+       ywf4 : y of wire at forward  endplate   "
+ 
+       zwf4 : z of wire at forward  endplate   "
+ 
+  
+       Output
+ 
+       q2(1) : x of wire  at closest point in lab.
+ 
+       q2(2) : y of wire  at closest point   "
+ 
+       q2(3) : z of wire  at closest point   "
+
+       q1(1) : x of helix at closest point   "
+ 
+       q1(2) : y of helix at closest point   "
+ 
+       q1(3) : z of helix at closest point   "
+ 
+       ntry  :
+ 
+     */
+    void HELWIR(const G4double xwb4,
+
+                 const G4double ywb4,
+
+                 const G4double zwb4,
+
+                 const G4double xwf4,
+
+                 const G4double ywf4,
+
+                 const G4double zwf4,
+
+                 const G4double xp,
+
+                 const G4double yp,
+
+                 const G4double zp,
+
+                 const G4double px,
+
+                 const G4double py,
+
+                 const G4double pz,
+
+                 const G4double B_kG[3],
+
+                 const G4double charge,
+
+                 const G4int ntryMax,
+
+                 G4double& distance,
+
+                 G4double q2[3], G4double q1[3],
+
+                 G4int& ntry);
+
+    //! Calculate the result of a matrix times vector.                
+
+    /*!                                                               
+                                                                      
+      Input                                                           
+                                                                      
+      ndim             : dimension                                    
+                                                                      
+      b(1-ndim)        : vector                                       
+                                                                      
+      m(1-ndim,1-ndim) : matrix                                       
+                                                                      
+      a(1-ndim)        : vector                                       
+                                                                      
+      c(1-ndim)        : vector                                       
+                                                                      
+      mode             : c = m * a     for mode=0                     
+                                                                      
+      c = b * m * a for mode=1                                        
+                                                                      
+      Output                                                          
+                                                                      
+      c(1-ndim)        : for mode 1, solution is put on c[0]          
+                                                                      
+    */
+
+    void Mvopr(const G4int ndim, const G4double b[3], const G4double m[3][3],                  const G4double a[3], G4double c[3], const G4int mode);
+
+  void dedxFuncInti(void);
+
+private:
+  G4int hitPointer[43][288],truthPointer[43][288];
+  BesMdcHitsCollection* hitsCollection;
+  BesMdcHitsCollection* truthCollection;
+  BesMdcGeoParameter* mdcGeoPointer;
+  BesMdcCalTransfer* mdcCalPointer;
+  MdcGeomSvc* mdcGeomSvc;
+  G4Svc* m_G4Svc;
+  TF1 *dEdE_mylanfunc;
+  
+   G4int m_nonUniformField;
+
+   G4double alpha, brot[3][3];
+
+  ///dedx sim ---------------------------
+  CalibDataSvc* m_calibDataSvc;
+  IDedxCurSvc* m_pDedxCurSvc;
+  TH1F* m_dedx_hists;
+  G4int m_numDedxHists;
+  G4int m_numBg;
+  std::vector<G4double> m_bgRange;
+  G4int GetBetagammaIndex(G4double bg);
+  G4int GetAngleIndex(G4double);
+  G4int GetChargeIndex(G4int);
+  G4double GetValDedxCurve(G4double bg, G4double charge);
+  G4double dedxSample(G4double betagamma, G4double length, G4double theta);
+  
+  //dedx ntuple
+  NTuple::Tuple* m_tupleMdc;
+  NTuple::Item<double> m_betaGamma;
+  NTuple::Item<double> m_fitval;
+  NTuple::Item<double> m_random;
+  NTuple::Item<double> m_dedx;
+  NTuple::Item<double> m_de;
+  //NTuple::Item<double> m_length;
+  NTuple::Item<double> m_charge;
+  NTuple::Item<double> m_costheta;
+  ///------------------------------------
+};
+
+#endif
+

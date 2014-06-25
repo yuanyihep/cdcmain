@@ -1,0 +1,35 @@
+package MdcSim
+
+author Deng ziyan<dengzy@mail.ihep.ac.cn>
+branches src cmt
+
+use BesPolicy      BesPolicy-01-*
+use BesGeant4    BesGeant4-00-*   External
+use BesCLHEP     BesCLHEP-* External
+
+use GdmlToG4  GdmlToG4-*   External
+use SimUtil  SimUtil-*   Simulation/BOOST
+use TruSim   TruSim-*    Simulation/BOOST
+use GaudiInterface GaudiInterface-01-* External
+use MdcCalibFunSvc  MdcCalibFunSvc-* Mdc
+use MdcTunningSvc MdcTunningSvc-* Simulation/BOOST
+use G4Svc     G4Svc-00-*    Simulation
+use BesROOT   *             External
+#use RootIO   RootIO-*  Event
+use G4Geo   G4Geo-*  DetectorDescription
+#use TrkBase      TrkBase-*    Reconstruction/MdcPatRec 
+#use MdcGeom      MdcGeom-*    Reconstruction/MdcPatRec
+use calibUtil *               Calibration
+use CalibData *               Calibration
+use DedxCurSvc    DedxCurSvc-*     Mdc
+
+
+
+include_dirs $(MdcSim_root)/MdcSim   \
+             $(SimUtil_root)/SimUtil \
+             $(TruSim_root)/TruSim
+
+library  MdcSim *.cc
+#apply_pattern component_library
+
+apply_pattern installed_library

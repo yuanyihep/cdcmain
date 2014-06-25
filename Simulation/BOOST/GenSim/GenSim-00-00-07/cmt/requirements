@@ -1,0 +1,14 @@
+package GenSim
+
+author Deng ziyan<dengzy@mail.ihep.ac.cn>
+branches src cmt
+
+use BesPolicy      BesPolicy-01-*
+use BesGeant4    BesGeant4-00-*   External
+use BesROOT      BesROOT-*  External
+
+include_dirs  $(GenSim_root)/GenSim
+
+library  GenSim *.cc
+
+apply_pattern installed_library

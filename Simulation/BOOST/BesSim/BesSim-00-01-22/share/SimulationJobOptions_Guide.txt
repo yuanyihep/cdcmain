@@ -1,0 +1,322 @@
+// job options for event generator and detector simulation algorithm are all included in the file jobOptions_sim.txt, which is located in 
+// Simulation/BOOST/BesSim/share, and will be automatically copied to your TestRelease/run directory when you type 'cmt br gmake' in TestRelease/cmt.
+
+// since our software development is ongoing, the simulation job options may be updated in each new BOSS release. 
+// The default simulation parameters may be changed. so when you run your simulation job in a new BOSS release,
+// please don't just copy your old jobOptions files. Your jobOptions should be based on the standard jobOptions_sim.txt in this new BOSS release.
+
+// since BOSS 6.3.0, the jobOptions_sim.txt has been much simplified, many properties which users need not change frequently have been moved to
+// G4Svc_BesSim.txt (which is included by jobOptions_sim.txt), users just need two files (jobOptions_sim.txt and run.mac ) to run a simulation job. 
+// Of course, if you use generator package BesGenModule(GENBES from BESII), you also need a file run.cards; 
+// if you use generator package KKMC, you may need files such as DECAY.DEC, pdt.table , userDecayTableName(for example MYDECAY), 
+// and random seed file for BesRndmGenSvc (BesRndmGenSvc.out).
+
+
+// here, I explain the properties of event generator and detector simulation algorithm one by one.
+
+// currently, there are several generator packages in BOSS framework, others can be easily included in //the future: 
+// BesGenModule, which is based on ~30 MC generators from BESII (GENBES);
+// Bhlumi is a package introduced to BESIII by Dubna group;
+// KKMC is introduced and developed for BESIII by Dr. He Kanglin (hekl@ihep.ac.cn), 
+// based on the original KK2f package (Computer Physics Communication 130(2000) 260-325)
+// EvtGen is developed for BESIII usage by Dr. Ping Ronggang (pingrg@ihep.ac.cn), based on the original CLEO and Barbar package
+
+// to use one of these generator packages, first you need to prepend it's name to ApplicationMgr DLLs and TopAlg, 
+// then set the properties of the generator algorithm.
+*****************generator package BesGenModule********************
+ApplicationMgr.DLLs += { "Tester" };
+ApplicationMgr.TopAlg += { "BesGenModule" };
+
+// open a generator in run.cards, and make sure the opened generator name is the same as the one prepended to ApplicationMgr.DLLs. 
+// For example, for the above two lines, you should open 'tester' generator in run.cards.
+BesGenModule.Runcards ="run.cards";
+
+// the generated events will be output into a file named evt.dat, 
+// you can control the output percent. (0-100)
+BesGenModule.Ratio = 0;
+
+*****************generator package Bhlumi**************************
+// prepend Bhlumi to ApplicationMgr DLLs and TopAlg
+#include "$BHLUMIROOT/share/Bhlumi.txt"
+
+// set properties of Bhlumi algorithm
+Bhlumi.CMEnergy = 3.097;
+Bhlumi.InitializedSeed={123456, 1, 0};
+Bhlumi.MinThetaAngle = 0.3764;  // costhe = 0.93
+Bhlumi.MaxThetaAngle = 2.7652;  // costhe = -0.93
+Bhlumi.SoftPhotonCut = 0.01;     // Eg > Cut * Ebeam
+
+*****************generator package KKMC****************************
+// KKMC is precision MC generator for e+e- ' femion + anti-femion, it includes
+// e+e-'(gamma's) mu+ mu-,  e+e-'(gamma's) tau+ tau-,  e+e-'(gamma's)hadrons
+// and e+e-'resonances. Currently,  the following 1- resonance are implemented:
+// rho0, omega and phi  (1- resonance produced by, u, d, s quarks)
+// J/psi, psi(2S), psi(3770), psi(4030), psi(4160) and psi(4415) (1-resonance by charm quark)
+// The parameters of resonance are controlled by job option file
+
+// The ISR and FSR effects are automatically turned ON in KKMC generator. If you set particle 
+// decay through EvtGen, the decay radiation correction will be controlled by EvtGen
+
+// there are a lot of switches to control the event generation, for example:
+
+// set KKMC.GenerateMuonPair = true  to turn on muon pair production
+// set KKMC.generatorTauPair = true to turn tau pair production 
+
+// to generate e+e- 'hadrons (s,u,d quark only), you have to set
+// KKMC.GenerateResonance = false; KKMC.GenerateContinuum = true;
+// KKMC.GenerateDownQuark=true; KKMC.GenerateUpQuark=true;  
+// KKMC.GenerateStrangeQuark=true; KKMC.GenerateCharmQuark=false
+
+// To generate e+e-'rho, omega resonance only , you have to set
+// KKMC.GenerateResonance = true; KKMC.GenerateContinuum = false;
+// KKMC.GenerateDownQuark=true; KKMC.GenerateUpQuark=true;  
+// KKMC.GenerateStrangeQuark=false; KKMC.GenerateCharmQuark=false;
+
+// To generate e+e-'phi only , you have to set
+// KKMC.GenerateResonance = true; KKMC.GenerateContinuum = false;
+// KKMC.GenerateDownQuark=false; KKMC.GenerateUpQuark=false;  
+// KKMC.GenerateStrangeQuark=true; KKMC.GenerateCharmQuark=false;
+
+// To generate e+e-'charmoniom resonance only , you have to set
+// KKMC.GenerateResonance = true; KKMC.GenerateContinuum = false;
+// KKMC.GenerateDownQuark=false; KKMC.GenerateUpQuark=false;  
+// KKMC.GenerateStrangeQuark=false; KKMC.GenerateCharmQuark=true;
+
+// The following switches control the resonance productions
+// KKMC.GenerateRho=false/true;  KKMC.GenerateOmega=false/true;
+// KKMC.GeneratePhi = false/true;  KKMC.GenerateJPsi = flase/true;
+// KKMC.GeneratePsiPrime = false/true; KKMC.GeneratePsi3770=false/true;
+// KKMC.GeneratePsi4030 = false/true;  KKMC.GeneratePsi4030=false/true;
+// KKMC.GeneratePsi4160=false/true;  KKMC.GeneratePsi4415=false/true;
+
+// The decay of resonance and tau is controlled by EvtGen generator, you should simply set
+// KKMC.ParticleDecayThroughEvtGen=true;
+
+// By default, the following two switches of KKMC are turn ON:
+// KKMC.GenerateResonance=true; KKMC.GenerateCharmQuark=true;
+// others are turn OFF
+
+// prepend KKMC to ApplicationMgr DLLs and TopAlg
+#include "$KKMCROOT/share/jobOptions_KKMC.txt"
+
+// set properties of KKMC algorithm, for example, e+e-'psi(4030)
+KKMC.CMSEnergy = 4.030;   // CMS energy
+KKMC.CMSEnergySpread=0.0013; // energy spread
+KKMC.InitializedSeed={222222,1,0}; // initial seed for KKMC
+KKMC.NumberOfEventPrinted=100; // event print option
+
+KKMC.GeneratePsi4030=true;   // turn psi(4030) on
+
+KKMC.ParticleDecayThroughEvtGen=true;
+EvtDecay.userDecayTableName = "MYDECAY";
+
+// control random seed for EvtGen package, 
+// BesRndmGenSvc.out will be automatically updated with new seeds at the end of a run.
+BesRndmGenSvc.ReadFromFile = true;
+BesRndmGenSvc.FileToRead = "BesRndmGenSvc.out";
+
+// please comment the following two lines if ParticleDecayThroughEvtGen = false
+ApplicationMgr.DLLs += { "EvtGen_i","BesServices" };   // or replace EvtGen_i with BesEvtGen
+ApplicationMgr.TopAlg += { "EvtDecay" };
+
+// We strongly recommend user to set particle decay though EvtGen interface 
+************************generator package EvtGen***************************
+// please see the EvtGen user guide for detail or contact Dr. Ping Ronggang (pingrg@ihep.ac.cn)
+
+*****************simulation algorithm BesSim*********************************
+// job options for detector simulation.
+
+//firstly, prepend BesSim to DLLs and TopAlg.
+ApplicationMgr.DLLs += {"BesSim" };
+ApplicationMgr.TopAlg += {"BesSim"};
+
+// the following line is necessary for simulation job.
+// generally, users don't need to change properties of Service "G4Svc" and Algorithm "BesSim" in the included file G4Svc_BesSim.txt
+#include "$BESSIMROOT/share/G4Svc_BesSim.txt"
+
+// users only need to change few properties of G4Svc and BesSim,
+// for example, RunID, G4 macro file, output data file, and number of events.
+
+// Run ID
+G4Svc.RunID = -9;
+
+// Geant4 run macro file
+// users control MDC noise and wire efficiency in this Geant4 macro file
+G4Svc.FADSMacro = "run.mac";
+
+// by default, we construct all geometry of BESIII detector through GDML data file, to make sure the geometry consistency in BESIII offline system.
+// if you just want to test a simulation job, you can open one sub-detector, and set all the others to be 0, 
+// it will reduce the time of geometry initialization.
+// geometry construction(0:not construct, 1:construct with G4 code, 2:construct with GDML files)
+BesSim.Mdc = 2;
+BesSim.Tof = 2;
+BesSim.Emc = 2;
+BesSim.Muc = 2;
+// geometry of beam pipe and super conducting magnet
+BesSim.PipeSCM = 2; 
+
+// ASCII output control, the 8 items (0 or 1) in AsciiFlag is to control the following 8 parts: 
+// MDCTRUTH, MDCDIGI, TOFTRUTH, TOFDIGI, EMCTRUTH, EMCDIGI, MUCTRUTH, MUCDIGI
+// to make the simulation algorithm not output ASCII data file, set the AsciiFlag = "00000000"
+//From 6.3.1, new tuning mode I/O control are added. 
+//HitOut: default 0. When set to 1, the data write out will not be digi data but hit data.
+BesSim.HitOut = 0;
+
+//AsciiFlag:default 00000000, when any 1 position of 8 set 1, will write ascii
+//file. Write out digi data when HitOut=0, hit data when HitOut=1. 
+BesSim.AsciiFlag = "11111111";
+BesSim.AsciiFile ="boost.dat";  //you'd better use a file name with full path.
+
+//RootFlag:default false.When set to true,the hit data write out in RootFile . Only // take effect when HitOut=1;  
+BesSim.RootFlag = false;
+BesSim.RootFile = "MdcHit.root";
+
+//When Tuning set to 1, the data in HitCollections of G4SDManager will be cleared 
+// and replaced by hit data read in from TuningFile before Digitizer. 
+//The detector construct will be skipped except SD claim to reduce runing time.
+BesSim.Tuning = 0;
+BesSim.TuningFile = "hit.dat";
+
+//In tuning mode,when FormatAR=0, will open ascii file; when set to 1,the input File Stream will open RootFile not AsciiFile
+ BesSim.FormatAR =0;
+
+// besides data file in ASCII format, you can also choose to output data in binary format, which is //in a much smaller size.
+// if you choose binary format, you must make sure BesSim.TDSFlag = true;
+// BesSim.TDSFlag is in G4Svc_BesSim.txt.
+//Below have been discarded in new version of BesSim
+//#include "$RAWDATACNVROOT/share/WriteRawDatajobOptions.txt"
+//RawDataOutputSvc.OutputFiles ={"boost.rdt"}; //you'd better use a file name with full path.
+
+//Now write our root format digi data by BOSS RootCnvSvc
+BesSim.TDSFlag=true;
+#include "$ROOTIOROOT/share/jobOptions_Digi2Root.txt"
+RootCnvSvc.digiRootOutputFile ="digi.rtraw";
+
+// OUTPUT PRINTOUT LEVEL
+// Set output level threshold (2=DEBUG, 3=INFO, 4=WARNING, 5=ERROR, 6=FATAL )
+// when level=6, the size of log file is the smallest.
+MessageSvc.OutputLevel  = 4;
+
+// Event related parameters
+// Number of events to be processed (default is 10)
+ApplicationMgr.EvtMax = 20;
+
+*********$BESSIMROOT/share/G4Svc_BesSim.txt****************
+// G4Svc_BesSim.txt is included in jobOptions_sim.txt
+
+ApplicationMgr.DLLs   += { "MagneticField"};
+ApplicationMgr.ExtSvc += { "MagneticFieldSvc"};
+
+ApplicationMgr.DLLs   += {"BesServices"};
+
+#include "$BESSIMROOT/share/Bes_Gen.txt"
+
+#include "$CALIBSVCROOT/share/job-CalibData.txt"
+#include "$MDCCALIBFUNSVCROOT/share/job_MdcCalibFunSvc.txt"
+CalibRootCnvSvc.Mdcrootfile="$BESCALDATA/constant/MdcCalibConst.root";
+// mdc noise model
+G4Svc.MdcNoiseFile = "$MDCSIMROOT/share/run23096noise.root";
+
+// If you want to run the simulation job in an interactive mode, and visualize the detector structure, 
+// you need to set the following two properties to "true"
+G4Svc.Visualize       = false;
+// interactive run mode
+G4Svc.InteractiveG4 = false;
+
+// geant4 verbosity, control the output information during Geant4 run, event and tracking.
+// If you set TrackingVerbosity to 1 or bigger, Geant4 will output tracking and stepping information of each track, 
+// the log file will be in a very big size!
+// geant4 verbosity
+G4Svc.RunVerbosity    = 1;
+G4Svc.EventVerbosity  = 0;
+G4Svc.TrackingVerbosity = 0;
+
+// be default, we use the generator algorithms such as BesGenModule, or KKMC, in this condition, the following property is set to false.
+// if you want to use the generator based on Geant4 particle gun, you need not prepend generator name to ApplicationMgr.DLLs and TopAlg, just set 
+// G4Svc.BesGenAction = true, and open the generator in run.mac file (introduction about run.mac is in the latter part of this document).
+G4Svc.BesGenAction = false;
+
+// beam bunch position, unit (mm)
+G4Svc.BeamPosX=0;
+G4Svc.BeamPosY=0;
+G4Svc.BeamPosZ=0;
+
+// beam bunch size , unit (mm)
+G4Svc.BeamSizeX=0.38;
+G4Svc.BeamSizeY=0.0057;
+G4Svc.BeamSizeZ=15;
+
+// beam start time , unit (ns), the beam start time will be sampled between 0, 8, 16
+// you can set all the 3 items to 0 .
+// beam start time , unit (ns)
+G4Svc.NBunch=3;
+G4Svc.BeamStartTime=0;
+G4Svc.BeamDeltaTime=8;
+
+// beam bunch time sigma, unit (ns)
+G4Svc.BunchTimeSigma = 0.02;
+
+// Boost CMS to the Lab. e+ e- have 22mrad collide angle in BEPCII. 
+G4Svc.BoostLab =  false  £ºnot boost (default)
+                   true  £ºboost
+G4Svc.BeamAngle = 11 
+
+// Source of MdcSim Geometry parameters
+G4Svc.MdcDataInput  = 0 :  get data from text file
+                      1 :  get data from MdcGeomSvc (Default)
+                      
+// Magnetic field, 0: no magnetic field  1: uniform field  2: nonuniform field
+BesSim.Field = 1;
+
+// if you want to output MC data in binary format, you must set this flag to be true.
+// register MC data to TDS
+BesSim.TDSFlag = true;
+
+// PhysicsList(1:BesPhysicsList, 2:QGSP, 3:QGSP_BIC, 4:QGSP_BERT,
+// 5:QGSP_BERT_HP, 6:BaBar) default: QGSP_BERT
+BesSim.PhysicsList = 4;
+
+*****************run.mac***********************************
+// generator based on Geant4 particle gun, 
+// user can choose one generator name, tester or cosmic.
+// generator in run.mac is valid only if G4Svc.BesGenAction = true;
+// if you want to use the generator in run.mac, 
+// you must not prepend any other generator to DLLs and TopAlg (such as BesGenModule, KKMC) in you simulation jobOption file
+
+/generator/name tester
+// number of particles, particle name, cosmin, cosmax, phimin, phimax (in degree), momentum, delta momentum (GeV), start position x,y,z (mm)
+/generator/tester   1   pi-   0 0   0 0   1 0   0 60 0
+
+/generator/name cosmic
+// particle name, start position x,y,z (mm)
+// the momentum, theta, phi of generated particles are sampled from root file in GenSim/root
+/generator/cosmic  mu-  0  2630  0
+
+// the following is about mdc spacial resolution, noise and wire efficiency, if you have questions, please contact Dr Yuan Ye. (yuany@ihep.ac.cn)
+
+// control of smear drift distance in MdcDigitizer
+/mdc/digi/smearflag  0 : no smear
+                  1 : get spatial resolution from CalFunSvc (default)
+                  2 : fixed resolution
+// The fixed resolution value (micrometer) when /mdc/digi/smearflag 2
+/mdc/digi/spacers 130
+
+// by default, we use noise type 3, which the noise is randomly got from a BESII run.
+// noise flag:   0: no noise; 1: add noise; Default 0
+/mdc/noise/flag 1
+/mdc/noise/type 3
+/mdc/noise/level 0.2
+
+#0: get wire efficiency from CalFunSvc, "/mdc/eff/eff" command will be ignored;  
+#1: If you want to set eff. by hand.  Default: 0
+#/mdc/eff/flag 1
+
+#First parameter is layer no. , range -1,0-42.    "-1" means all layers.
+#Second is eff. value, default is 1.
+#/mdc/eff/eff -1 1.
+
+
+If users don't use generator algorithm (such as KKMC, BesGenModule, Bhlumi, EvtGen), 
+but use generator based on Geant4 particle gun, please refer to "G4ParticleList.txt" for particle name used in Geant4 macro file run.mac.
+If you use BesGenModule, please refer to "GenbesParticleId.txt" for particle id used in GENBES(BESII)
+You can also refer to "ASCII data format" of MC output data, refer to "PDGSchema.pdf" for particle's PDGcode in MC output data files.

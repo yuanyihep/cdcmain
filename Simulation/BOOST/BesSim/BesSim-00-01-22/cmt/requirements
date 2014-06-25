@@ -1,0 +1,58 @@
+package BesSim
+
+author Deng ziyan<dengzy@mail.ihep.ac.cn>
+branches src cmt
+
+use BesPolicy   BesPolicy-01-*
+use GaudiInterface  GaudiInterface-01-*   External 
+use BesGeant4    BesGeant4-00-*   External
+use GdmlToG4  GdmlToG4-*   External
+use G4Svc     G4Svc-00-*    Simulation
+use BesServices    BesServices-*       Control
+use BesROOT     BesROOT-*        External
+use RootPolicy  RootPolicy-*
+
+use MdcRawEvent   MdcRawEvent-*   Mdc
+use TofRawEvent   TofRawEvent-*   Tof
+use EmcRawEvent   EmcRawEvent-*   Emc
+use MucRawEvent   MucRawEvent-*   Muc
+use Identifier Identifier-* DetectorDescription
+use RawEvent RawEvent-* Event
+use McTruth  McTruth-*  Event
+use AsciiDmp AsciiDmp-* Event
+use MagneticField MagneticField-*
+use RealizationSvc RealizationSvc-* Simulation/Realization
+use RootEventData  RootEventData-* Event
+
+use SimUtil  SimUtil-*   Simulation/BOOST
+use TruSim   TruSim-*    Simulation/BOOST
+use MdcSim   MdcSim-*    Simulation/BOOST
+use TofSim   TofSim-*    Simulation/BOOST
+use EmcSim   EmcSim-*    Simulation/BOOST
+use MucSim   MucSim-*    Simulation/BOOST
+use GenSim   GenSim-*    Simulation/BOOST
+use PhySim   PhySim-*    Simulation/BOOST
+
+use EventNavigator EventNavigator-* Event
+
+include_dirs $(BesSim_root)/BesSim   \
+             $(SimUtil_root)/SimUtil \
+             $(TruSim_root)/TruSim   \
+             $(MdcSim_root)/MdcSim   \
+             $(TofSim_root)/TofSim   \
+             $(EmcSim_root)/EmcSim   \
+             $(MucSim_root)/MucSim   \
+             $(GenSim_root)/GenSim   \
+             $(PhySim_root)/PhySim   
+
+#macro BesSim_linkopts " -lSimUtil -lTruSim -lMdcSim -lTofSim -lEmcSim -lMucSim -lGenSim -lPhySim -lG4Svc "
+
+apply_pattern component_library  
+#apply_pattern dual_use_library  files="*.cc components/*.cxx"
+# build a component library
+library  BesSim *.cc components/*.cxx
+
+#apply_pattern root_package headers="\
+# ../BesSim/TMcHitEvent.hh\
+# ../BesSim/TMcHitTof.hh\
+#"

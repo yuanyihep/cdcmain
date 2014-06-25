@@ -1,0 +1,80 @@
+# inner 300k Cryostat
+# innerR(mm)        outerR(mm)       length(mm)
+# innerCryo[0]>>innerCryo[1]>>innerCryo[2]
+   1375                1381            3846
+# adiabatic layer of inner 300k Cryostat
+# innerR(mm)        outerR(mm)       length(mm)
+# l1Adia[0]>>l1Adia[1]>>l1Adia[2]
+   1381                1401            3846
+# Inner 77k radiative shield
+# innerR(mm)       outerR(mm)    length(mm)
+# innerShield[0]>>innerShield[1]>>innerShield[2]
+   1445               1448          3804 
+# adiabatic layer of inner 77k radiative shield
+# innerR(mm)       outerR(mm)    length(mm)
+# l2Adia[0]>>l2Adia[1]>>l2Adia[2]
+    1448              1453          3784
+# Outer 77k radiative shield
+# innerR(mm)       outerR(mm)    length(mm)
+# outerShield[0]>>outerShield[1]>>outerShield[2]
+   1575               1579.5        3804
+# adiabatic layer of outer 77k radiative shield
+# innerR(mm)       outerR(mm)    length(mm)
+# l3Adia[0]>>l3Adia[1]>>l3Adia[2]
+   1579.5             1599.5        3784
+# endcaps 77k radiative shield
+# innerR(mm)        outerR(mm)      depth(mm)         -posZ(mm)         posZ(mm)
+# endShield[0]>>endShield[1]>>endShield[2]>>endShield[3]>>endShield[4]
+   1448               1575            10               -1897             1897
+# insulation layer of coil
+# innerR(mm)        outerR(mm)      length(mm)
+# l1insu[0]>>l1insu[1]>>l1insu[2]
+   1479.5            1479.9           3540
+# coil
+# innerR(mm)        outerR(mm)      length(mm)
+# coil[0]>>coil[1]>>coil[2]
+   1479.9             1500.4          3540
+# insulation layer between coil and supporter 
+# innerR(mm)        outerR(mm)      length(mm)
+# l2insu[0]>>l2insu[1]>>l2insu[2]
+   1500.4             1500.8          3540
+# supporter
+# innerR(mm)        outerR(mm)      length(mm)
+# supp[0]>>supp[1]>>supp[2]
+   1500.8             1518.8          3590
+# adiabatic layer
+# innerR(mm)        outerR(mm)      length(mm)
+# l4Adia[0]>>l4Adia[1]>>l4Adia[2]
+   1518.8             1523.6          3590
+# endcaps of coil (Cryostat)
+# innerR(mm)        outerR(mm)      depth(mm)          -posZ(mm)         posZ(mm)
+# endCoil[0]>>endCoil[1]>>endCoil[2]>>endCoil[3]>>endCoil[4]
+  1479.9              1500.4          25                -1782.5           1782.5
+# outer 300k Cryostat
+# innerR(mm)        outerR(mm)      length(mm)
+# outerCryo[0]>>outerCryo[1]>>outerCryo[2]
+  1630                1646            3846
+# endcaps of 300k Cryostat
+# innerR(mm)        outerR(mm)      depth(mm)          -posZ(mm)         posZ(mm)
+# endCryo[0]>>endCryo[1]>>endCryo[2]>>endCryo[3]>>endCryo[4]
+  1375                1646            32                -1939             1939
+# reinforce
+# innerR(mm)        outerR(mm)      depth(mm)          -posZ(mm)         posZ(mm)
+# rein[0]>>rein[1]>>rein[2]>>rein[3]>>rein[4]
+  1646                1700            20                -1818             1818 
+# pipe of inner 77k
+# innerR(mm)        outerR(mm)      length of supporter    height of supporter   distance of tub and box     z length
+# pipe1[0]>>pipe1[1]>>pipe1[2]>>pipe1[3]>>pipe1[4]>>pipe1[5]
+    7                 9                   24                     4                         9                   3604
+# pipe of outer 77k
+# innerR(mm)        outerR(mm)      length of supporter    height of supporter   distance of tub and box     z length
+# pipe2[0]>>pipe2[1]>>pipe2[2]>>pipe2[3]>>pipe2[4]>>pipe2[5]
+    7                 9                   24                     4                         9                   3418
+# pipe of 4k
+# innerR(mm)        outerR(mm)      length of supporter    height of supporter   distance of tub and box     z length
+# pipe3[0]>>pipe3[1]>>pipe3[2]>>pipe3[3]>>pipe3[4]>>pipe3[5]
+    10                13                 30                      4                         16                  3490
+# hole of the SCM
+# from outer to inner: innerR1(mm)  outerR1(mm)  height1  innerR2(mm)  outerR2(mm) height2 innerR3 outerR3 innerR4 outerR4 boxX boxY height3
+# hole[0]>>hole[1]>>hole[2]?>>hole[3]>>hole[4]?>>hole[5]?>>hole[6]>>hole[7]>>hole[8]>>hole[9]>>hole[10]>>hole[11]>>hole[12]?
+  215       250      20        175      240        29       172       175     107       112      70        36        1000

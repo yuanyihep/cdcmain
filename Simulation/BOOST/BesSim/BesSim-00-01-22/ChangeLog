@@ -1,0 +1,12 @@
+2012-11-15 Deng Ziyan
+share/ direcotory was missing in tag BesSim-00-01-21
+
+2012-05-24 Matthias Ullrich <Matthias.Ullrich@physik.uni-giessen.de>
+*   As a new Tofendcap detector (MRPC) has been implemented into
+    the simulation the following files have been
+    adapted (changes will only be considered if the new MRPC detector is activated):
+    QGSP_BERT_CHIPS.icc : Implemented StepLimiter (will only affect MRPC volume!)
+    steplimiter.hh:  Implemented StepLimiter (will only affect MRPC volume!)
+    BesRawDataWriter
+    BesSim
+    BesMcTruthWriter

@@ -1,0 +1,15 @@
+// To simulate BES TESTER generator
+//
+    G4int nParticle;          //Number of particle in a event
+    G4String particleName;    //particle name in G4 format
+    G4double minCos;          //minimum of cos(theta)
+    G4double maxCos;          //maximum
+    G4double phiStart;        //starting phi
+    G4double phiEnd;          //end
+    G4double pMomentum;       //momentum (center)
+    G4double deltaP;          //momentum (range)
+    G4double posX;
+    G4double posY;
+    G4double posZ;              //z position
+    
+//

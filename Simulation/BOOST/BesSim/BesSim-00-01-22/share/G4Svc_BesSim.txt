@@ -1,0 +1,68 @@
+//DENG Zi-yan  2007-03-15
+
+ApplicationMgr.DLLs   += {"BesServices"};
+
+#include "$REALIZATIONSVCROOT/share/jobOptions_Realization.txt"
+#include "$BESSIMROOT/share/Bes_Gen.txt"
+
+ApplicationMgr.DLLs += { "BesSim" };
+ApplicationMgr.TopAlg += {"BesSim"};
+
+// mdc noise model 
+G4Svc.MdcNoiseFile = "$MDCSIMROOT/share/run23096noise.root";
+
+MdcTunningSvc.path_mdc = "$MDCTUNNINGSVCROOT/share/par/";
+
+#include "$EMCSIMROOT/share/EmcSim.txt"
+#include "$MUCSIMROOT/share/MucSim.txt"
+
+G4Svc.Visualize       = false;
+// interactive run mode
+G4Svc.InteractiveG4 = false;
+
+// geant4 verbosity
+G4Svc.RunVerbosity    = 1;
+G4Svc.EventVerbosity  = 0;
+G4Svc.TrackingVerbosity = 0;
+
+G4Svc.BesGenAction = false;
+
+G4Svc.BoostLab = true;
+
+// beam bunch position, unit (mm)
+G4Svc.BeamPosX=0;
+G4Svc.BeamPosY=0;
+G4Svc.BeamPosZ=0;
+
+// beam bunch size , unit (mm)
+G4Svc.BeamSizeX=0.38;
+G4Svc.BeamSizeY=0.0057;
+G4Svc.BeamSizeZ=15;
+
+// beam start time , unit (ns)
+G4Svc.NBunch=3;
+G4Svc.BeamStartTime=648;
+G4Svc.BeamDeltaTime=8;
+
+// beam bunch time sigma, unit (ns)
+G4Svc.BunchTimeSigma = 0.02;
+
+// Geant4 run macro file
+G4Svc.FADSMacro = "$BESSIMROOT/share/run.mac";
+
+// Magnetic field, 0: no magnetic field  1: uniform field  2: nonuniform field
+BesSim.Field = 2;
+#include "$MAGNETICFIELDROOT/share/MagneticField.txt"
+
+//register MC data to TDS
+BesSim.TDSFlag = true;
+
+// PhysicsList(1:BesPhysicsList, 2:QGSP, 3:QGSP_BIC, 4:QGSP_BERT, 
+// 5:QGSP_BERT_HP, 6:BaBar, 7:CHIPS, 8:QBBC, 9:QGSP_BERT_CHIPS) default: QGSP_BERT_CHIPS
+BesSim.PhysicsList = 9;
+
+//realization
+RealizationSvc.IfUseTrg = false;
+
+#include "$EVENTNAVIGATORROOT/share/EventNavigator.txt"
+

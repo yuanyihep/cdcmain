@@ -1,0 +1,18 @@
+//**************************************************************
+//
+// MC Generator job options file
+//==============================================================
+// #include "BossCommon/Bes.UnixStandardJob.txt"
+
+// General Application Configuration options
+ApplicationMgr.DLLs   += { "McEventSelector" };
+ApplicationMgr.ExtSvc += { "McCnvSvc", "McEventSelector/EventSelector" };
+
+// Persistency services
+EventPersistencySvc.CnvServices += { "McCnvSvc" };
+
+// End of MC Generator job options file
+//**************************************************************
+
+
+

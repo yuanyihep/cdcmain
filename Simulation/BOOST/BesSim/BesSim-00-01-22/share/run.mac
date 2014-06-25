@@ -1,0 +1,19 @@
+########################################################
+#       Macro card to run BOOST
+########################################################
+
+#/generator/name tester
+#/generator/tester   1   geantino   0 0   0 0   1 0   0 0 0
+
+#0: no noise; 1: add noise; Default 0
+#/mdc/noise/flag 0
+#/mdc/noise/type 3
+#/mdc/noise/level 0.2
+
+#0: from CalFunSvc, "/mdc/eff/eff" command will be ignored;  
+#1: If you want to set eff. by hand.  Default: 0
+#/mdc/eff/flag 1
+
+#First parameter is layer no. , range -1,0-42.    "-1" means all layers.
+#Second is eff. value, default is 1. 
+#/mdc/eff/eff -1 1.

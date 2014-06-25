@@ -1,0 +1,44 @@
+# Gold layer
+# innerR(mm)        outerR(mm)       length(mm)
+# goldLayer[0]>>goldLayer[1]>>goldLayer[2]
+   31.48564            31.5            334
+# inner Be pipe
+# innerR(mm)        outerR(mm)       length(mm)
+# innerBe[0]>>innerBe[1]>>innerBe[2]
+   31.5         32.3        268
+# oil layer (density = 810kg/m3)
+# innerR(mm)        outerR(mm)       length(mm)
+# oilLayer[0]>>oilLayer[1]>>oilLayer[2]
+   32.3            33.1            268
+# outer Be pipe
+# outerR(mm)        outerR(mm)       length(mm)
+# outerBe[0]>>outerBe[1]>>outerBe[2]
+   33.1         33.7        268
+# inner side Be pipe 
+# innerR(mm)        outerR(mm)       length(mm)    -posz(mm)         posz(mm)
+# innerBeSide[0]>>innerBeSide[1]>>innerBeSide[2]>>innerBeSide[3]>>innerBeSide[4]
+   31.5             33.05              21            -144.5           144.5
+# inner side Al layer in z direction 
+# innerR(mm)  outerR(mm)  length(mm) -posz(mm)    posz(mm)
+# innerAl[0]>>innerAl[1]>>innerAl[2]>>innerAl[3]>>innerAl[4]
+   33.05        34.5         21        -144.5       144.5
+# Al ring in both sides 
+# innerR(mm)  outerR(mm)  length(mm) -posz(mm)    posz(mm)
+# AlRing[0]>>AlRing[1]>>AlRing[2]>>AlRing[3]>>AlRing[4]
+   34.5        48          6       -137        137
+# outer side Al layer in z direction 
+# innerR(mm)  outerR(mm)  length(mm) -posz(mm)    posz(mm)
+# outerAl[0]>>outerAl[1]>>outerAl[2]>>outerAl[3]>>outerAl[4]
+   31.5        34.5         20        -165          165
+# Ag layer
+# innerR(mm)  outerR(mm)  length(mm) -posz(mm)    posz(mm)
+# AgLayer[0]>>AgLayer[1]>>AgLayer[2]>>AgLayer[3]>>AgLayer[4]
+   31.5        34.5         19        -184.5         184.5
+# Cu layer
+# innerR(mm)  outerR(mm)  length(mm) -posz(mm)    posz(mm)
+# CuLayer[0]>>CuLayer[1]>>CuLayer[2]>>CuLayer[3]>>CuLayer[4]
+   31.5        34.5         6        -197         197
+# Al cover
+# innerR(mm)  outerR(mm)  length(mm) -posz(mm)    posz(mm)
+# AlCover[0]>>AlCover[1]>>AlCover[2]>>AlCover[3]>>AlCover[4]
+    45          48          60        -170         170

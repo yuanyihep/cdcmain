@@ -1,0 +1,88 @@
+6.3.1 Release Note (BesSim Algorithm)    2007/12/17   DENG, Ziyan
+
+**********Simulation/BOOST/BesSim**********
+modified the geometry of SCM, both G4code and gdml file,
+remove G4 classes about physics processes,
+use stream of BesServices to control random number,
+add QGSP_BERT, QGSP_BIC, QGSP_BERT_HP, and Babar physics list
+change cmt/requirements, automatically copy run.mac to TestRelease/run/ directory,
+update share/jobOption_sim.txt, G4Svc_BesSim.txt, jobOption_sim_trig.txt
+change default AsciiFlag from 11111111 to 00000000
+
+**********Simulatin/BOOST/MdcSim**********
+add wire in mdc geometry construction,
+add nan protection on mdc hit/digit,
+add dat/Mdc.txt
+
+**********Simulatin/BOOST/TofSim**********
+add dat/BesTof.txt
+fix a bug in BesTofSD.cc(change the place of "delete newHit"),
+fix a bug about the propagation length of endcap.
+
+**********Simulation/BOOST/EmcSim**********
+use classes about G4IrregularBox from GDML external package,
+these classes are not included in Geant4.9.0.01,
+update barrel geometry, fix geometry overlap, and also update Emc.gdml
+
+**********Simulation/BOOST/TruSim**********
+MC truth solution 2, at the begin of every event, save tracks and vertexes from generator,
+and update or append track/vertex during G4 tracking.
+don't need to add new particles to Geant4.
+
+**********Simulation/BOOST/PhySim**********
+remove G4 classes about hadronic packages(such as QGSP),
+add BgsPhysicsList from Babar
+
+**********Simulation/BOOST/SimUtil**********
+Add BesSCM.txt, parameter data file of SCM geometry,
+remove data files of four subdetectors
+
+**********Simulation/G4Svc**********
+don't set 4 Momentum of particles from generator to G4, just set px, py, pz, pdgcode,
+add LogLevel, to control the output level about HepMC event and MCtruth information.
+
+**********Simulation/HepMC**********
+don't use this package, and use HepMC from LCG Interfaces instead,
+use HepMC  ¡Á Interfaces
+
+**********DetectorDescription/GdmlManagement**********
+update Bes.gdml  Mdc.gdml£¬ Emc.gdm, and schema directory
+
+**********External/BesGeant4**********
+change Geant4 to BesGeant4, because there is also a Geant4 package in LCG
+upgrade Geant4 from 8.1 to 9.0.p01, modify G4SteppingManager.cc, G4MuonMinusCaptureAtRest.hh, .cc 
+
+**********External/GdmlToG4**********
+gdml 2.8.0, recompiled with new OS, GCC, and Geant4
+update classes about G4IrregularBox
+
+**********External/GdmlToRoot**********
+same as GdmlToG4
+
+**********GENBES/GENBES-00-00-08/**********
+modify runi.F, change the save mode of current seed
+
+**********Generator/BesGenInterface**********
+**********Generator/BesGenModule**********
+change code about random number
+
+**********Generator/EvtGen_i**********
+change code about random number
+
+**********Control/BesKernel**********
+**********Control/BesServices**********
+change code about random number
+
+**********Event/AsciiDmp**********
+read/write MDC hit information
+
+
+
+
+
+
+
+
+
+
+
