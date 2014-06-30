@@ -178,7 +178,7 @@ G4bool BesMdcSD::ProcessHits(G4Step* aStep,G4TouchableHistory*)
   }
 
   G4double edep = aStep->GetTotalEnergyDeposit() / stepLength;
-  //if(edep==0.) return false;//yzhang 2014-05-29 for chargedgeantino
+  if(edep==0.) return false;//yzhang 2014-05-29 for chargedgeantino
 
   // get position of the track at the beginning and at the end of step
   G4StepPoint* prePoint  = aStep->GetPreStepPoint() ;
